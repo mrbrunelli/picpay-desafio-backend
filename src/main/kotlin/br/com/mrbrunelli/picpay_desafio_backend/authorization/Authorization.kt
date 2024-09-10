@@ -1,9 +1,15 @@
 package br.com.mrbrunelli.picpay_desafio_backend.authorization
 
+
 data class Authorization(
-    val message: String
+    val status: String,
+    val data: AuthorizationData
 ) {
     fun isAuthorized(): Boolean {
-        return message == "Autorizado"
+        return data.authorization
     }
 }
+
+data class AuthorizationData(
+    val authorization: Boolean
+)
