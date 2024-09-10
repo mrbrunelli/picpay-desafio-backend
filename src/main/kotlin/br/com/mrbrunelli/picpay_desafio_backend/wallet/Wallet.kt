@@ -17,4 +17,8 @@ data class Wallet(
     fun debit(value: BigDecimal): Wallet {
         return Wallet(id, fullName, cpf, email, password, type, balance.subtract(value))
     }
+
+    fun credit(value: BigDecimal): Wallet {
+        return Wallet(id, fullName, cpf, email, password, type, balance.add(value))
+    }
 }

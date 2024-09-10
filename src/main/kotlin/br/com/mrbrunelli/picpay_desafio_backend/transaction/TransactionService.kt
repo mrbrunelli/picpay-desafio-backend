@@ -15,14 +15,20 @@ class TransactionService(
     private val authorizerService: AuthorizerService,
     private val notificationService: NotificationService
 ) {
+    fun list(): List<Transaction> {
+        return transactionRepository.findAll()
+    }
+
     @Transactional
     fun create(transaction: Transaction): Transaction {
         validate(transaction)
 
         val newTransaction = transactionRepository.save(transaction)
 
-        val wallet = walletRepository.findById(transaction.payer).get()
-        walletRepository.save(wallet.debit(transaction.value))
+        val walletPayer = walletRepository.findById(transaction.payer).get()
+        val walletPayee = walletRepository.findById(transaction.payee).get()
+        walletRepository.save(walletPayer.debit(transaction.value))
+        walletRepository.save(walletPayee.credit(transaction.value))
 
         authorizerService.authorize(transaction)
 
