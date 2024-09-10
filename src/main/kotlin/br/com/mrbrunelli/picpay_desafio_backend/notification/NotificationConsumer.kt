@@ -21,7 +21,7 @@ class NotificationConsumer(
             .retrieve()
             .toEntity(Notification::class.java)
 
-        if (response.statusCode.isError || !response.body?.message!!) {
+        if (response.statusCode.isError || !response.body?.isStatusOk()!!) {
             throw NotificationException("Error sending notification")
         }
 
